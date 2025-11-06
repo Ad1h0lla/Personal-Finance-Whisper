@@ -1,0 +1,64 @@
+
+---
+
+# ✅ **FULL WORKING CODE**
+Below is everything you need to copy/paste into your repo.
+
+---
+
+# 📁 **backend/app.py**
+
+```python
+from flask import Flask, request, jsonify
+import pandas as pd
+import requests
+import json
+
+app = Flask(__name__)
+
+OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+@app.route("/analyze", methods=["POST"])
+def analyze_expenses():
+    data = request.json
+    expenses = data.get("expenses", [])
+    api_key = data.get("apiKey", "")
+
+    df = pd.DataFrame(expenses)
+
+    # Basic numeric insights
+    total = df["amount"].sum()
+    category_totals = df.groupby("category")["amount"].sum().to_dict()
+
+    prompt = f"""
+    You are a personal finance assistant.
+    Here is the user's total spending: {total}.
+    Category spending: {category_totals}.
+    Provide:
+    1. A short spending summary.
+    2. 3 saving opportunities.
+    3. Budget adjustment recommendations.
+    """
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "model": "deepseek/deepseek-chat",
+        "messages": [{"role": "user", "content": prompt}]
+    }
+
+    response = requests.post(OPENROUTER_URL, headers=headers, data=json.dumps(payload)).json()
+
+    ai_output = response["choices"][0]["message"]["content"]
+
+    return jsonify({
+        "total_spending": total,
+        "category_totals": category_totals,
+        "ai_summary": ai_output
+    })
+
+if __name__ == "__main__":
+    app.run(debug=True)
