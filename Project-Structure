@@ -1,0 +1,9 @@
+personal-finance-whisperer/
+│── backend/
+│   └── app.py
+│── helpers/
+│   └── analyze.js
+│── frontend/
+│   ├── index.html
+│   └── script.js
+└── README.md
