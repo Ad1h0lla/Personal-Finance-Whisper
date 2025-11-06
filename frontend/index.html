@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Personal Finance Whisperer</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #111; color: #fff; }
+        input, button { padding: 8px; margin: 5px; }
+        .box { background: #222; padding: 20px; border-radius: 8px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<h1>💸 Personal Finance Whisperer</h1>
+
+<div>
+    <input id="apiKey" placeholder="Enter OpenRouter API Key" style="width:300px;">
+    <button onclick="send()">Analyze</button>
+</div>
+
+<textarea id="expenses" rows="10" cols="50" placeholder="category,amount"></textarea>
+
+<div id="output" class="box"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
